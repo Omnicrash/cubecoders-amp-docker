@@ -56,7 +56,8 @@ RUN mkdir /usr/share/man/man1 && \
     mkdir -p /data && \
     touch /data/empty && \
     chown AMP:AMP /data && \
-    ln -s /data /home/AMP/.ampdata
+    ln -s /data /home/AMP/.ampdata && \
+    alias tmux='tmux new-session -s AMP -d'
 
 VOLUME ["/data"]
 
