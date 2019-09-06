@@ -56,9 +56,8 @@ RUN mkdir /usr/share/man/man1 && \
     mkdir -p /data && \
     touch /data/empty && \
     chown AMP:AMP /data && \
-    ln -s /data /home/AMP/.ampdata && \
-    alias tmux='tmux new-session -s AMP -d'
+    ln -s /data /home/AMP/.ampdata
 
 VOLUME ["/data"]
 
-ENTRYPOINT (su -l AMP -c "ampinstmgr quick ${AMPUSER} ${AMPPASSWORD} 0.0.0.0 8080"; su -l AMP -c "ampinstmgr view ADS true") || bash || tail -f /dev/null
+ENTRYPOINT (su -l AMP -c "ampinstmgr quick ${AMPUSER} ${AMPPASSWORD} 0.0.0.0 8080"; su -l AMP -c "ampinstmgr view ADS true") || /bin/bash || /usr/bin/tail -f /dev/null
