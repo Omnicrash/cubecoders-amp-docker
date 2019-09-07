@@ -18,12 +18,16 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
 
-#TODO: Try using group
+ENV PUID=1000
+ENV PGID=100
 
-RUN mkdir /usr/share/man/man1 && \
-    useradd -d /home/amp -m amp -s /bin/bash && \
-    apt-get update && \
-    apt-get install -y \
+#TODO: Try using group
+#TODO: apt-get upgrade
+
+RUN mkdir /usr/share/man/man1 \
+ && useradd -u $PUID -g $PGID -d /home/amp -m amp -s /bin/bash \
+ && apt-get update && \
+ && apt-get install -y \
         locales \
         cron \
         lib32gcc1 \
@@ -44,20 +48,20 @@ RUN mkdir /usr/share/man/man1 && \
         openjdk-8-jre-headless \
         software-properties-common \
         dirmngr \
-        apt-transport-https && \
-    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    dpkg-reconfigure --frontend=noninteractive locales && \
-    update-locale LANG=en_US.UTF-8 && \
-    apt-key adv --fetch-keys http://repo.cubecoders.com/archive.key && \
-    apt-add-repository "deb http://repo.cubecoders.com/ debian/" && \
-    apt-get update && \
-    apt-get install ampinstmgr --install-suggests && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    su -l amp -c '(crontab -l ; echo "@reboot ampinstmgr -b")| crontab -' && \
-    mkdir -p /home/amp/.ampdata && \
-    touch /home/amp/.ampdata/empty && \
-    chown amp:amp /home/amp/.ampdata
+        apt-transport-https \
+ && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+ && dpkg-reconfigure --frontend=noninteractive locales \
+ && update-locale LANG=en_US.UTF-8 \
+ && apt-key adv --fetch-keys http://repo.cubecoders.com/archive.key \
+ && apt-add-repository "deb http://repo.cubecoders.com/ debian/" \
+ && apt-get update \
+ && apt-get install ampinstmgr --install-suggests \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/* \
+ && su -l amp -c '(crontab -l ; echo "@reboot ampinstmgr -b")| crontab -' \
+ && mkdir -p /home/amp/.ampdata \
+ && touch /home/amp/.ampdata/empty \
+ && chown -R amp:users /home/amp/.ampdata
 
 VOLUME ["/data"]
 
