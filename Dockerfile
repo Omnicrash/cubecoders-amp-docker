@@ -18,8 +18,10 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
 
+#TODO: Try using group
+
 RUN mkdir /usr/share/man/man1 && \
-    useradd -d /home/AMP -m AMP -s /bin/bash && \
+    useradd -d /home/amp -m amp -s /bin/bash && \
     apt-get update && \
     apt-get install -y \
         locales \
@@ -52,11 +54,13 @@ RUN mkdir /usr/share/man/man1 && \
     apt-get install ampinstmgr --install-suggests && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    su -l AMP -c '(crontab -l ; echo "@reboot ampinstmgr -b")| crontab -' && \
-    mkdir -p /home/AMP/.ampdata && \
-    touch /home/AMP/.ampdata/empty && \
-    chown AMP:AMP /home/AMP/.ampdata
+    su -l amp -c '(crontab -l ; echo "@reboot ampinstmgr -b")| crontab -' && \
+    mkdir -p /home/amp/.ampdata && \
+    touch /home/amp/.ampdata/empty && \
+    chown amp:amp /home/amp/.ampdata
 
 VOLUME ["/data"]
 
-ENTRYPOINT (su -l AMP -c "ampinstmgr quick ${AMPUSER} ${AMPPASSWORD} 0.0.0.0 8080"; su -l AMP -c "ampinstmgr view ADS true") || /bin/bash || /usr/bin/tail -f /dev/null
+#TODO: Allow upgrades & reboots without killing instance
+
+ENTRYPOINT (su -l amp -c "ampinstmgr quick ${AMPUSER} ${AMPPASSWORD} 0.0.0.0 8080"; su -l amp -c "ampinstmgr view ADS true") || /bin/bash || /usr/bin/tail -f /dev/null
