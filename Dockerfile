@@ -56,6 +56,8 @@ RUN mkdir /usr/share/man/man1 \
  && apt-add-repository "deb http://repo.cubecoders.com/ debian/" \
  && apt-get update \
  && apt-get install ampinstmgr --install-suggests \
+ && apt-get upgrade -y \
+ && apt-get autoremove \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* \
  && su -l amp -c '(crontab -l ; echo "@reboot ampinstmgr -b")| crontab -' \
