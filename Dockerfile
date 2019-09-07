@@ -63,7 +63,7 @@ RUN mkdir /usr/share/man/man1 \
  && touch /home/amp/.ampdata/empty \
  && chown -R amp:users /home/amp/.ampdata
 
-VOLUME ["/data"]
+VOLUME ["/home/amp/.ampdata"]
 
 #TODO: Allow upgrades & reboots without killing instance
 
