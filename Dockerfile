@@ -18,6 +18,9 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
 
+ENV BINDADDRESS=0.0.0.0
+ENV PORT=8080
+
 ENV PUID=1000
 ENV PGID=100
 
@@ -73,5 +76,7 @@ USER amp
 WORKDIR ${DATAPATH}
 #TODO: Allow upgrades & reboots without killing instance
 
-ENTRYPOINT (su -l amp -c "ampinstmgr quick ${AMPUSER} ${AMPPASSWORD} 0.0.0.0 8080"; su -l amp -c "ampinstmgr view ADS true") || /bin/bash || /usr/bin/tail -f /dev/null
-
+#ENTRYPOINT (su -l amp -c "ampinstmgr quick ${AMPUSER} ${AMPPASSWORD} ${BINDADDRESS} ${PORT}"; su -l amp -c "ampinstmgr view ADS true") || /bin/bash || /usr/bin/tail -f /dev/null
+COPY "docker-entrypoint.sh" ~/
+RUN chmod +x ~/docker-entrypoint.sh
+ENTRYPOINT ["~/docker-entrypoint.sh"]
