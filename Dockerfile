@@ -31,7 +31,7 @@ ENV DATAPATH="/home/amp/.ampdata"
 
 RUN mkdir /usr/share/man/man1 \
  && useradd -u $PUID -g $PGID -d /home/amp -m amp -s /bin/bash \
- && apt-get update && \
+ && apt-get update \
  && apt-get install -y \
         locales \
         cron \
