@@ -53,10 +53,9 @@ RUN mkdir /usr/share/man/man1 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     su -l AMP -c '(crontab -l ; echo "@reboot ampinstmgr -b")| crontab -' && \
-    mkdir -p /data && \
-    touch /data/empty && \
-    chown AMP:AMP /data && \
-    ln -s /data /home/AMP/.ampdata
+    mkdir -p /home/AMP/.ampdata && \
+    touch /home/AMP/.ampdata/empty && \
+    chown AMP:AMP /home/AMP/.ampdata
 
 VOLUME ["/data"]
 
