@@ -21,6 +21,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PUID=1000
 ENV PGID=100
 
+ENV DATAPATH="/home/amp/.ampdata"
+
 #TODO: Try using group
 #TODO: apt-get upgrade
 
@@ -61,12 +63,15 @@ RUN mkdir /usr/share/man/man1 \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* \
  && su -l amp -c '(crontab -l ; echo "@reboot ampinstmgr -b")| crontab -' \
- && mkdir -p /home/amp/.ampdata \
- && touch /home/amp/.ampdata/empty \
- && chown -R amp:users /home/amp/.ampdata
+ && mkdir -p ${DATAPATH} \
+ && touch ${DATAPATH}/empty \
+ && chown -R amp:${PGID} ${DATAPATH}
 
-VOLUME ["/home/amp/.ampdata"]
+VOLUME [${DATAPATH}]
 
+USER amp
+WORKDIR ${DATAPATH}
 #TODO: Allow upgrades & reboots without killing instance
 
 ENTRYPOINT (su -l amp -c "ampinstmgr quick ${AMPUSER} ${AMPPASSWORD} 0.0.0.0 8080"; su -l amp -c "ampinstmgr view ADS true") || /bin/bash || /usr/bin/tail -f /dev/null
+
