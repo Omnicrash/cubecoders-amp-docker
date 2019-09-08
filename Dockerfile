@@ -1,6 +1,4 @@
-# AMP Standalone Dockerfile
-
-FROM debian:9.6-slim
+FROM debian:buster-slim
 
 EXPOSE 8080-8180
 EXPOSE 5678-5688
