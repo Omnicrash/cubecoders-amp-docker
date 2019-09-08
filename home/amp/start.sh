@@ -30,3 +30,5 @@ while true; do
   fi
   sleep 1
 done
+
+#TODO: Monitor process
