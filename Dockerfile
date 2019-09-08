@@ -78,5 +78,5 @@ RUN chmod +x /home/amp/start.sh
 VOLUME [${DATAPATH}]
 
 WORKDIR ${DATAPATH}
-ENTRYPOINT ["/bin/bash", "-c", "/usr/local/bin/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["/home/amp/start.sh"]
