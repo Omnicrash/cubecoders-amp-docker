@@ -24,13 +24,14 @@ ENV PORT=8080
 ENV PUID=1000
 ENV PGID=100
 
-ENV DATAPATH="/home/amp/.ampdata"
+ENV USERHOME=/home/amp
+ENV DATAPATH="${USERHOME}/.ampdata"
 
 #TODO: Try using group
 #TODO: apt-get upgrade
 
 RUN mkdir /usr/share/man/man1 \
- && useradd -u $PUID -g $PGID -d /home/amp -m amp -s /bin/bash \
+ && useradd -u $PUID -g $PGID -d ${USERHOME} -m amp -s /bin/bash \
  && apt-get update \
  && apt-get install -y \
         locales \
@@ -70,6 +71,10 @@ RUN mkdir /usr/share/man/man1 \
  && touch ${DATAPATH}/empty \
  && chown -R amp:${PGID} ${DATAPATH}
 
+COPY "docker-entrypoint.sh" ${USERHOME}/
+RUN chown amp:${PGID} ${USERHOME}/docker-entrypoint.sh
+RUN chmod +x ${USERHOME}/docker-entrypoint.sh
+
 VOLUME [${DATAPATH}]
 
 USER amp
@@ -77,6 +82,4 @@ WORKDIR ${DATAPATH}
 #TODO: Allow upgrades & reboots without killing instance
 
 #ENTRYPOINT (su -l amp -c "ampinstmgr quick ${AMPUSER} ${AMPPASSWORD} ${BINDADDRESS} ${PORT}"; su -l amp -c "ampinstmgr view ADS true") || /bin/bash || /usr/bin/tail -f /dev/null
-COPY "docker-entrypoint.sh" ~/
-RUN chmod +x ~/docker-entrypoint.sh
 ENTRYPOINT ["~/docker-entrypoint.sh"]
