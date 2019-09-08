@@ -70,15 +70,14 @@ RUN mkdir /usr/share/man/man1 \
  && touch ${DATAPATH}/empty \
  && chown -R amp:${PGID} ${DATAPATH}
 
-COPY "docker-entrypoint.sh" /home/amp/
-RUN chown amp:${PGID} /home/amp/docker-entrypoint.sh
-RUN chmod +x /home/amp/docker-entrypoint.sh
+COPY "./usr/local/bin/docker-entrypoint.sh" /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+COPY "./home/amp/start.sh" /home/amp/
+RUN chown amp:${PGID} /home/amp/start.sh
+RUN chmod +x /home/amp/start.sh
 
 VOLUME [${DATAPATH}]
 
-USER amp
 WORKDIR ${DATAPATH}
-#TODO: Allow upgrades & reboots without killing instance
-
-#ENTRYPOINT (su -l amp -c "ampinstmgr quick ${AMPUSER} ${AMPPASSWORD} ${BINDADDRESS} ${PORT}"; su -l amp -c "ampinstmgr view ADS true") || /bin/bash || /usr/bin/tail -f /dev/null
-ENTRYPOINT ["/home/amp/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
