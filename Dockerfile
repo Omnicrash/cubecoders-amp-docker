@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:9.6-slim
 
 EXPOSE 8080-8180
 EXPOSE 5678-5688
