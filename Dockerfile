@@ -82,4 +82,4 @@ WORKDIR ${DATAPATH}
 #TODO: Allow upgrades & reboots without killing instance
 
 #ENTRYPOINT (su -l amp -c "ampinstmgr quick ${AMPUSER} ${AMPPASSWORD} ${BINDADDRESS} ${PORT}"; su -l amp -c "ampinstmgr view ADS true") || /bin/bash || /usr/bin/tail -f /dev/null
-ENTRYPOINT ["~/docker-entrypoint.sh"]
+ENTRYPOINT ["${USERHOME}/docker-entrypoint.sh"]
