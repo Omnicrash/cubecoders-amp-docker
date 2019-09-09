@@ -63,7 +63,6 @@ RUN mkdir /usr/share/man/man1 \
  && apt-get autoremove \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* \
- && su -l amp -c '(crontab -l ; echo "@reboot ampinstmgr -b")| crontab -' \
  && mkdir -p ${DATAPATH} \
  && touch ${DATAPATH}/empty \
  && chown -R amp:${PGID} ${DATAPATH}

@@ -12,8 +12,10 @@ ADSPATH=~/.ampdata/instances/ADS01
 
 # Create the controller instance if it doesn't exist
 if [ ! -d "${ADSPATH}/" ]; then
-	ampinstmgr quick ${AMPUSER} ${AMPPASSWORD} ${BINDADDRESS} ${PORT}
+	ampinstmgr --strict --QuickStart ${AMPUSER} ${AMPPASSWORD} ${BINDADDRESS} ${PORT}
 fi
+
+ampinstmgr --StartBoot
 
 # Monitor latest log file
 LOGPATH="${ADSPATH}/AMP_Logs/*.log"
