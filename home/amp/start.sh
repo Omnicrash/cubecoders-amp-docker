@@ -23,8 +23,7 @@ LOGPATH="${ADSPATH}/AMP_Logs/*.log"
 ACTIVELOGFILE=
 
 while true; do
-  #TODO: Ignore not found errors
-  LOGFILE=`ls -t ${LOGPATH} | head -n1`
+  LOGFILE=`ls -t ${LOGPATH} 2>/dev/null | head -n1`
   if [[ "${LOGFILE}" != "${ACTIVELOGFILE}" ]]; then
     killtail
     ACTIVELOGFILE=${LOGFILE}
