@@ -13,12 +13,12 @@ ADSPATH=~/.ampdata/instances/ADS01
 
 # Create the controller instance if it doesn't exist
 if [ ! -d "${ADSPATH}/" ]; then
+  echo "No controller found, creating..."
   ampinstmgr --strict --QuickStart ${AMPUSER} ${AMPPASSWORD} ${BINDADDRESS} ${PORT}
 else
-  #TODO: Update amp package
   echo "Upgrading instances..."
   ampinstmgr --UpgradeAll
-
+  
   echo "Booting instances..."
   ampinstmgr --StartBoot
 fi
