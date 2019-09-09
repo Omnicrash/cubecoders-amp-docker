@@ -1,28 +1,33 @@
 #!/bin/bash
-trap killtail EXIT
 
 function killtail {
-	if [[ -n ${TAILPID} ]]; then
+  if [[ -n ${TAILPID} ]]; then
     kill ${TAILPID}
     wait ${TAILPID} 2>/dev/null
   fi
 }
 
+trap killtail EXIT
+
 ADSPATH=~/.ampdata/instances/ADS01
 
 # Create the controller instance if it doesn't exist
 if [ ! -d "${ADSPATH}/" ]; then
-	ampinstmgr --strict --QuickStart ${AMPUSER} ${AMPPASSWORD} ${BINDADDRESS} ${PORT}
-fi
+  ampinstmgr --strict --QuickStart ${AMPUSER} ${AMPPASSWORD} ${BINDADDRESS} ${PORT}
+else
+  #TODO: Update amp package
+  echo "Upgrading instances..."
+  ampinstmgr --UpgradeAll
 
-ampinstmgr --StartBoot
+  echo "Booting instances..."
+  ampinstmgr --StartBoot
+fi
 
 # Monitor latest log file
 LOGPATH="${ADSPATH}/AMP_Logs/*.log"
 
 ACTIVELOGFILE=
-
-while true; do
+while sleep 1; do
   LOGFILE=`ls -t ${LOGPATH} 2>/dev/null | head -n1`
   if [[ "${LOGFILE}" != "${ACTIVELOGFILE}" ]]; then
     killtail
@@ -30,7 +35,6 @@ while true; do
     tail -f "${ACTIVELOGFILE}" &
     TAILPID=$!
   fi
-  sleep 1
 done
 
 #TODO: Monitor process
