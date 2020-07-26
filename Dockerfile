@@ -47,7 +47,7 @@ RUN mkdir /usr/share/man/man1 \
         software-properties-common \
         dirmngr \
         apt-transport-https \
-        openjdk-8-jre-headless \
+        openjdk-11-jre-headless \
         software-properties-common \
         dirmngr \
         apt-transport-https \
