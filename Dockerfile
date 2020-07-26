@@ -30,7 +30,7 @@ RUN mkdir /usr/share/man/man1 \
  && useradd -u $PUID -g $PGID -d /home/amp -m amp -s /bin/bash \
  && apt-get update \
  && apt-get install -y \
-        locales \
+        locales-all \
         cron \
         lib32gcc1 \
         coreutils \
@@ -51,11 +51,11 @@ RUN mkdir /usr/share/man/man1 \
         software-properties-common \
         dirmngr \
         apt-transport-https \
- && sed --in-place '/en_US.UTF-8/s/^#//' \
- && locale-gen en_US.UTF-8 \
- && dpkg-reconfigure --frontend=noninteractive locales \
+ #&& sed --in-place '/en_US.UTF-8/s/^#//' \
+ #&& locale-gen en_US.UTF-8 \
+ #&& dpkg-reconfigure --frontend=noninteractive locales \
  && update-locale LANG=en_US.UTF-8 \
- && apt-key adv --fetch-keys http://repo.cubecoders.com/archive.key \
+ && apt-key adv --fetch-keys "http://repo.cubecoders.com/archive.key" \
  && apt-add-repository "deb http://repo.cubecoders.com/ debian/" \
  && apt-get update \
  && apt-get install ampinstmgr --install-suggests \
