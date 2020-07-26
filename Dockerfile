@@ -1,4 +1,4 @@
-FROM debian:9.6-slim
+FROM debian:10.4-slim
 
 EXPOSE 8080-8180
 EXPOSE 5678-5688
@@ -25,9 +25,6 @@ ENV PUID=1000
 ENV PGID=100
 
 ENV DATAPATH="/home/amp/.ampdata"
-
-#TODO: Try using group
-#TODO: apt-get upgrade
 
 RUN mkdir /usr/share/man/man1 \
  && useradd -u $PUID -g $PGID -d /home/amp -m amp -s /bin/bash \
