@@ -51,7 +51,8 @@ RUN mkdir /usr/share/man/man1 \
         software-properties-common \
         dirmngr \
         apt-transport-https \
- && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+ && sed --in-place '/en_US.UTF-8/s/^#//' \
+ && locale-gen en_US.UTF-8 \
  && dpkg-reconfigure --frontend=noninteractive locales \
  && update-locale LANG=en_US.UTF-8 \
  && apt-key adv --fetch-keys http://repo.cubecoders.com/archive.key \
